@@ -1,0 +1,45 @@
+<!-- App Administrator List -->
+<section
+  style="border: 1px solid rgba(192, 192, 192, 0.63)"
+  class="m-2 flex flex-col h-[calc(410px_-_18px)]"
+>
+  <div class="primary-heading text-center py-2">Table Not Found</div>
+  <div class="normal-heading text-justify px-2">Link WOW Resources (based on app id) is dependent on data from App A. In Order to process, pl click App A
+    and post relevant data in  App A before accessing Link WOW Resources. In Case, you are unable to access App A, pl
+    conctact your App Administrator 
+  </div>
+  <div class="primary-heading text-center py-2">List Of App Administrators</div>
+  <!-- Administrator List -->
+  <div class="flex-1 px-2 overflow-auto">
+    <!-- Item -->
+    <ng-container *ngFor="let item of appAdministratorList">
+      <div
+        style="border: 1px solid rgba(192, 192, 192, 0.63)"
+        class="flex items-center gap-x-3 p-1 my-2"
+      >
+        <div class="w-8 h-8">
+          <img
+            [src]="getUSerProfileImage(item.user_id)"
+            class="w-full h-full cursor-pointer"
+            (click)="openGetsterProfile(item)"
+          />
+        </div>
+        <div class="primary-heading !text-xs">
+          {{ item.first_name }} <br />
+          {{ item.last_name }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="flex justify-center items-center mt-2">
+    <button
+      mat-raised-button
+      class="primary-button bg-[#ff3333]"
+      color="warn"
+      mat-dialog-close
+    >
+      Close
+    </button>
+  </div>
+</section>

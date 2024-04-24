@@ -1,0 +1,368 @@
+<div class="flex">
+  <div>
+    <button
+      mat-raised-button
+      class="primary-button"
+      (click)="link()"
+      [disabled]="is_disable"
+    >
+      LINK
+    </button>
+  </div>
+  <div class="ml-2">
+    <button
+      mat-raised-button
+      class="primary-button"
+      [disabled]="is_disable"
+      (click)="access_wow_falshcards()"
+    >
+      Access WOW Flashcards
+    </button>
+  </div>
+</div>
+<div>
+  <div class="gt-xs:flex mt-3">
+    <div class="primary-heading mt-auto mb-auto w-[55px]">
+      <p class="">Sort By:</p>
+    </div>
+    <div class="w-full gt-xs:w-[50%] mt-auto mb-auto">
+      <mat-form-field
+        appearance="outline"
+        class="component--mat-form-field__custom-input w-full tablet:w-full laptop:w-[70%] mt-3"
+        [formGroup]="firstFormGroup"
+      >
+        <mat-label class="secondary-heading">Choose a Sort</mat-label>
+        <!-- [(ngModel)]="option" -->
+
+        <!-- [disabled]="isDisabled" -->
+        <mat-select
+          appearance="outline"
+          formControlName="institution"
+          required
+          (selectionChange)="sortValue($event)"
+        >
+          <mat-option [value]="1" selected>
+            Flashcards Globalized Date (New to Old)
+          </mat-option>
+          <mat-option [value]="2"> Charges per User. (High to Low) </mat-option>
+          <mat-option [value]="3"> Charges per User. (Low to High) </mat-option>
+        </mat-select>
+        <mat-error class="text-xs">Sort is required </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <div
+        class="mat-elevation-z8 mt-4 table-responsive lt-mdw-full md:w-fit gt-md:w-fit"
+      >
+        <div id="pdfTable0">
+          <table
+            id="excel_table"
+            matSort
+            mat-table
+            #table
+            [dataSource]="dataSource"
+            style="margin-left: auto; margin-right: auto"
+            class="component--mat-table__custom-table checklist-table table-bordered table-sm block"
+          >
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="WOWFlashCardsName">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="
+                  min-width: 180px;
+                  max-width: 200px;
+                  word-wrap: break-word;
+                  white-space: nowrap;
+                  padding-left: 8px;
+                  padding-right: 8px;
+                  vertical-align: middle;
+                  text-align: center;
+                  border-right: 1px solid #9a9a9a;
+                "
+              >
+                WOW FlashCards Name
+              </th>
+              <!-- <tr *ngFor="let item of item | orderBy: sortOrder"> -->
+              <td
+                style="
+                  border-right: 1px solid #9a9a9a;
+                  vertical-align: middle;
+                  padding-left: 8px;
+                  text-align: left;
+                "
+                mat-cell
+                *matCellDef="let element"
+              >
+                <div style="display: flex;">
+                  <div style="margin-top: auto; margin-bottom: auto;">
+                    <mat-radio-button (click)="selectRow(element)">
+                    </mat-radio-button>
+                    </div>
+                    <div style="height: 100px;width: 100px; padding: 4px;">
+                      <img [src]="shw_ceph_img(element?.wow_flashcards_thumb_nail_cloud_storage_file_id)" style="height: 100%;width: 100%;">
+                    </div>
+                  <div style="margin-top: auto;margin-bottom: auto;">
+                    {{ element.wow_flashcard_name }}
+                  </div>
+                  <div *ngIf="element.flag == 1" style="padding: 4px; margin-top: auto; margin-bottom: 4px; margin-left: auto; margin-right: auto;">
+                    <button
+                      class="bg-red-600 rounded-1xl text-white px-1"
+                      style="height: 25px; width: 35px; border-radius: 15px"
+                    >
+                      New
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <!-- </tr> -->
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container
+              matColumnDef="RelevantSyllabusCategories"
+              style="border-right: 1px solid #9a9a9a"
+            >
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="
+                  min-width: 160px;
+                  max-width: 200px;
+                  word-wrap: break-word;
+                  white-space: nowrap;
+                  padding-left: 8px;
+                  padding-right: 8px;
+                  vertical-align: middle;
+                  text-align: center;
+                  border-right: 1px solid #9a9a9a;
+                "
+              >
+                Relevant Syllabus<br />Categories
+              </th>
+              <td
+                style="
+                  border-right: 1px solid #9a9a9a;
+                  vertical-align: middle;
+                  padding-left: 8px;
+                  text-align: left;
+                "
+                mat-cell
+                *matCellDef="let element"
+              >
+                <!-- <div class="">
+                  {{ course_subject_name }}/{{ element.syllabus_name }}
+                </div> -->
+                <div *ngIf="element.syllabus_name == null">
+                  Not Shared
+                </div>
+                <div *ngIf="element.syllabus_name != null">
+                  {{ element.syllabus_name }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container
+              matColumnDef="IsthisfromGlobal"
+              style="border-right: 1px solid #9a9a9a"
+            >
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="
+                  min-width: 150px;
+                  max-width: 180px;
+                  word-wrap: break-word;
+                  white-space: nowrap;
+                  padding-left: 8px;
+                  padding-right: 8px;
+                  vertical-align: middle;
+                  text-align: center;
+                  border-right: 1px solid #9a9a9a;
+                "
+              >
+                Is this from Global<br />
+                WOW FlashCards?
+              </th>
+              <td
+                style="
+                  border-right: 1px solid #9a9a9a;
+                  vertical-align: middle;
+                  padding-left: 8px;
+                  text-align: left;
+                "
+                mat-cell
+                *matCellDef="let element"
+              >
+                {{ element.is_unshared_globally === 1 ? "Yes" : "No" }}
+              </td>
+            </ng-container>
+
+            <ng-container
+              matColumnDef="PopularityNoofUsers"
+              style="border-right: 1px solid #9a9a9a"
+            >
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="
+                  min-width: 150px;
+                  max-width: 180px;
+                  word-wrap: break-word;
+                  white-space: nowrap;
+                  padding-left: 8px;
+                  padding-right: 8px;
+                  vertical-align: middle;
+                  text-align: center;
+                  border-right: 1px solid #9a9a9a;
+                "
+              >
+                Popularity / No of Users
+              </th>
+              <td
+                style="
+                  border-right: 1px solid #9a9a9a;
+                  vertical-align: middle;
+                  padding-left: 8px;
+                  text-align: left;
+                "
+                mat-cell
+                *matCellDef="let element"
+              >
+                <div class="">
+                  {{
+                    element.up_to_date_total_no_global_users_to_whom_this_is_assigned
+                  }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container
+              matColumnDef="one_time_subscription_cost_per_user_for_global_users"
+              style=""
+            >
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="
+                  min-width: 150px;
+                  max-width: 180px;
+                  word-wrap: break-word;
+                  white-space: nowrap;
+                  padding-left: 8px;
+                  padding-right: 8px;
+                  vertical-align: middle;
+                  text-align: center;
+                "
+              >
+                Charges Per User
+              </th>
+              <td
+                style="
+                  vertical-align: middle;
+                  padding-right: 8px;
+                  text-align: right;
+                "
+                mat-cell
+                *matCellDef="let element"
+              >
+                <div *ngIf="element.one_time_subscription_cost_per_user_for_global_users != null">
+                  <span>{{
+                    element.one_time_subscription_cost_per_user_for_global_users
+                  }}</span>
+                  <span class="red-heading">
+                    {{
+                      element.one_time_subscription_global_users_currency
+                    }}</span
+                  >
+                </div>
+
+                <div *ngIf="element.one_time_subscription_cost_per_user_for_global_users == null">
+                  Free
+                </div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+              style="text-align: center"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              (click)="selection.toggle(row); onRowClicked(row)"
+              (mouseover)="row.hovered = true"
+              (mouseout)="row.hovered = false"
+            ></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="6">
+                No data matching the filter
+                <!-- "{{ input.value }}" -->
+              </td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator
+          class="component--mat-pagination__size"
+          #paginator
+          #paginatorElement
+          [length]="dataSource.data.length"
+          [pageIndex]="0"
+          [pageSizeOptions]="[5, 10, 20]"
+          [pageSize]="5"
+          [allValue]="dataSource.data.length"
+          appAddAllToPaginator
+        >
+        </mat-paginator>
+        <div class="flex bg-white-black" id="export_btn">
+          <div class="custom-mat-floating-label">
+            <mat-form-field
+              appearance="outline"
+              class="component--mat-form-field__custom-input pl-2"
+            >
+              <mat-label>Filter</mat-label>
+              <input matInput (keyup)="applyFilter($event)" #input />
+            </mat-form-field>
+          </div>
+          <div class="w-full flex justify-end">
+            <span class="p-5 export-btn" [matMenuTriggerFor]="menu"
+              >Export</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="downloadAsPDF()">
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>Print / Export PDF</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="exportReport('Your Educational Institution Syllabus.xlsx')"
+      >
+        <mat-icon>grid_on</mat-icon>
+        <span>Export SpreadSheet</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="exportReport('Your Educational Institution Syllabus.csv')"
+      >
+        <mat-icon>grid_on</mat-icon>
+        <span>Export csv File</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="exportReport('Your Educational Institution Syllabus.json')"
+      >
+        <mat-icon>grid_on</mat-icon>
+        <span>Export json</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

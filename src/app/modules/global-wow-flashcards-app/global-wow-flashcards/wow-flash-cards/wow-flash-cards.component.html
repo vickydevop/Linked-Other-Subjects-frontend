@@ -1,0 +1,19 @@
+<mat-toolbar class="component--dialog-box__custom-toolbar">
+  <span class="text-sm font-[550]">WOW Flashcards</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="flex items-center justify-center">
+    <mat-icon (click)="onNoClick()">close</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="lt-xs:w-full gt-sm:w-full" mat-dialog-content>
+  <div>
+    <iframe #app_frame class="w-full h-[477px]" style="border: 0" allow="web-share"></iframe>
+  </div>
+</section>
+<!-- <div class="h-[518px]"> -->
+  <div class="flex justify-center items-center pt-[7px]">
+    <button mat-raised-button class="primary-button bg-[#ff3333]" color="warn" mat-dialog-close (click)="onclick()">
+      Close
+    </button>
+  </div>
+<!-- </div> -->
